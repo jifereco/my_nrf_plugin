@@ -1,10 +1,10 @@
 package com.example.my_nrf_plugin
 
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
-import io.flutter.plugin.common.MethodChannel.MethodCallHandler
-import io.flutter.plugin.common.MethodChannel.Result
 
 /** MyNrfPlugin */
 class MyNrfPlugin: FlutterPlugin, MethodCallHandler {
