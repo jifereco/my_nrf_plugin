@@ -1,15 +1,14 @@
 group = "com.example.my_nrf_plugin"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 buildscript {
-    ext.kotlin_version = "2.2.20"
+    ext.kotlin_version = "1.9.24"
     repositories {
         google()
         mavenCentral()
     }
-
     dependencies {
-        classpath("com.android.tools.build:gradle:8.11.1")
+        classpath("com.android.tools.build:gradle:8.3.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
@@ -26,8 +25,11 @@ apply plugin: "kotlin-android"
 
 android {
     namespace = "com.example.my_nrf_plugin"
+    compileSdk = 34   // 👈 CLAVE
 
-    compileSdk = 36
+    defaultConfig {
+        minSdk = 21
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -35,33 +37,14 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
+        jvmTarget = "17"
     }
 
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
-        test.java.srcDirs += "src/test/kotlin"
     }
+}
 
-    defaultConfig {
-        minSdk = 24
-    }
-
-    dependencies {
-        testImplementation("org.jetbrains.kotlin:kotlin-test")
-        testImplementation("org.mockito:mockito-core:5.0.0")
-        implementation("no.nordicsemi.android:mcumgr-ble:2.7.4")
-    }
-
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-
-            testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
-            }
-        }
-    }
+dependencies {
+    implementation("no.nordicsemi.android:mcumgr-ble:2.7.4")
 }
