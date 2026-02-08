@@ -1,51 +1,26 @@
 package com.example.my_nrf_plugin
 
+
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothDevice
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-/** MyNrfPlugin */
-class MyNrfPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
+class NrfBleAndroidFfPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
 
   private lateinit var channel: MethodChannel
-  private lateinit var adapter: BluetoothAdapter
+  private val adapter: BluetoothAdapter by lazy {
+    BluetoothAdapter.getDefaultAdapter()
+  }
 
   override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(binding.binaryMessenger, "my_nrf_plugin")
+    channel = MethodChannel(binding.binaryMessenger, "nrf_ble_android_ff")
     channel.setMethodCallHandler(this)
-    adapter = BluetoothAdapter.getDefaultAdapter()
   }
 
   override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
     when (call.method) {
-
-      "isBonded" -> {
-        val mac = call.argument<String>("mac") ?: run {
-          result.error("ARG_ERROR", "MAC is null", null)
-          return
-        }
-
-        val device: BluetoothDevice = adapter.getRemoteDevice(mac)
-        result.success(device.bondState == BluetoothDevice.BOND_BONDED)
-      }
-
-      "removeBond" -> {
-        val mac = call.argument<String>("mac") ?: run {
-          result.error("ARG_ERROR", "MAC is null", null)
-          return
-        }
-
-        try {
-          val device: BluetoothDevice = adapter.getRemoteDevice(mac)
-          val method = device.javaClass.getMethod("removeBond")
-          result.success(method.invoke(device) as Boolean)
-        } catch (e: Exception) {
-          result.error("REMOVE_BOND_ERROR", e.message, null)
-        }
-      }
-
+      "ping" -> result.success(adapter != null)
       else -> result.notImplemented()
     }
   }
