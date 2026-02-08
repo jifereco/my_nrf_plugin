@@ -47,6 +47,9 @@ android {
 
 dependencies {
  
-    implementation "no.nordicsemi.android:mcumgr-core:2.7.4sdfsdfsd"
+    implementation ("no.nordicsemi.android:mcumgr-core:2.7.4")
+    implementation("no.nordicsemi.android:mcumgr-ble:2.7.4")
+implementation 'no.nordicsemi.android:mcumgr-core:2.7.4'
+implementation 'no.nordicsemi.android:mcumgr-ble:2.7.4'
 
 }
